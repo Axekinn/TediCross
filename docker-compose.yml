@@ -1,0 +1,51 @@
+services:
+  tedicross:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tedicross-bot
+    restart: unless-stopped
+    environment:
+      # Load from .env file or set directly here
+      - DISCORDTOKEN=${DISCORDTOKEN}
+      - TGTOKEN=${TGTOKEN}
+      - API_ID=${API_ID}
+      - API_HASH=${API_HASH}
+      - MONGO_URI=${MONGO_URI}
+      - NODE_ENV=production
+      - MONGODB_URL=mongodb://mongodb:27017/tedicross
+    volumes:
+      # Mount config.json for easy updates without rebuilding
+      - ./config.json:/app/config.json:ro
+    networks:
+      - tedicross-network
+    depends_on:
+      - mongodb
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  mongodb:
+    image: mongo:7-jammy
+    container_name: tedicross-mongodb
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_DATABASE=tedicross
+    volumes:
+      # Persist MongoDB data
+      - mongodb-data:/data/db
+    networks:
+      - tedicross-network
+    ports:
+      # Expose MongoDB port (optional, for debugging)
+      - "27017:27017"
+
+networks:
+  tedicross-network:
+    driver: bridge
+
+volumes:
+  mongodb-data:
+    driver: local

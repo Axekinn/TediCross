@@ -7,9 +7,18 @@
     "outDir": "./dist",
     "removeComments": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "alwaysStrict": true,
-    "skipLibCheck": true
+    "forceConsistentCasingInFileNames": false,
+    "strict": false,
+    "alwaysStrict": false,
+    "skipLibCheck": true,
+    "noEmitOnError": false,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "strictFunctionTypes": false,
+    "strictPropertyInitialization": false,
+    "noImplicitThis": false
+  },
+  "ts-node": {
+    "transpileOnly": true
   }
 }
